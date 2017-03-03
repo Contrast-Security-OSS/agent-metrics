@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Agent Log Analysis</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default" role="navigation" style="margin-bottom: 0">
+        	<div class="navbar-header">
+        	<span class="navbar-brand"><img width=25 height=25 src="https://cdn2.hubspot.net/hubfs/203759/Contrast_Security-2016/Image/LOGO-ICONbugContrast1016.png"></span><span class="navbar-brand" id="teamserver-user"></span> <span class="navbar-brand" id="teamserver-url"></span></div>
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="javascript:void(0);" onclick="location.reload()"><i class="fa fa-dashboard fa-fw"></i> Overview</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" onclick="changeClassloadingView()"><i class="fa fa-file-code-o fa-fw"></i> Classloading</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" onclick="changeUrlView()"><i class="fa fa-cloud fa-fw"></i> URLs</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" onclick="changeTracesView()"><i class="fa fa-warning fa-fw"></i>Traces</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" onclick="changeMessagesView()"><i class="fa fa-envelope-o fa-fw"></i>Messages</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" onclick="changeTrafficView()"><i class="fa fa-bar-chart-o fa-fw"></i>Traffic</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" onclick="changeErrorsView()"><i class="fa fa-exclamation fa-fw"></i>Errors / Warnings</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+                
+                <div style="padding-left:20px;padding-right:10px">
+                	<h3 id="web-container"></h3>
+                	<div>
+                		<p><b>Log Range</b></p>
+                		<p class="text-muted" id="log-start"></p>
+                		<p class="text-muted" id="log-end"></p>
+                	</div>
+                	<div>
+                		<p><b>JVM</b></p>
+                		<p class="text-muted" id="jvm-version"></p>
+                		<p class="text-muted" id="jvm-name"></p>
+                	</div>
+                	<div>
+                		<p><b>Agent</b></p>
+                		<p class="text-muted" id="agent-version"></p>
+                		<p class="text-muted" id="agent-build-time"></p>
+                	</div>
+                	<div>
+                		<p><b>Applications</b></p>
+                		<ul id="app-list">
+                		</ul>
+                	</div>
+                	<div id="feature-content" style="display:none">
+                		<p><b>Features</b></p>
+                		<ul id="feature-list">
+                		</ul>
+                	</div>
+                </div>
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row" style="padding-top:20px">
+                <div class="col-lg-3 col-md-6">
+                	<!-- This is the box with the banner statistic -->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-file-code-o fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div id="total-classloads" class="huge"></div>
+                                    <div>Classes Loaded</div>
+                                    <div id="rate-classloads"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)" onclick="changeClassloadingView()">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-file-code-o fa-fw"></i> Classloads During Run
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="classloading-chart" class="agent-chart"></div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+            </div>
+            
+            <div class="row" style="padding-top:20px">
+                <div class="col-lg-3 col-md-6">
+                	<!-- This is the box with the banner statistic -->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-cloud fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div id="total-urls" class="huge"></div>
+                                    <div>URLs Hit</div>
+                                    <div id="rate-urls"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)" onclick="changeUrlView()">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-cloud fa-fw"></i> URLs Observed During Run
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="url-chart" class="agent-chart"></div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+            </div>
+            
+            <div class="row" style="padding-top:20px">
+                <div class="col-lg-3 col-md-6">
+                	<!-- This is the box with the banner statistic -->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-warning fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div id="total-traces" class="huge"></div>
+                                    <div>Traces</div>
+                                    <div id="rate-traces"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)" onclick="changeTracesView()">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-warning fa-fw"></i> Traces Observed During Run
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="trace-chart" class="agent-chart"></div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+            </div>
+            
+            <div class="row" style="padding-top:20px">
+                <div class="col-lg-3 col-md-6">
+                	<!-- This is the box with the banner statistic -->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-envelope-o fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div id="total-messages" class="huge"></div>
+                                    <div>Message Traffic</div>
+                                    <div id="rate-messages"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)" onclick="changeMessagesView()">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-envelope-o fa-fw"></i> Messages Sent During Run
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="message-chart" class="agent-chart"></div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+            </div>
+            
+            <div class="row" style="padding-top:20px">
+                <div class="col-lg-3 col-md-6">
+                	<!-- This is the box with the banner statistic -->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-bar-chart-o fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div id="total-traffic" class="huge"></div>
+                                    <div>Message Traffic</div>
+                                    <div id="rate-traffic"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)" onclick="changeTrafficView()">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Outbound Traffic During Run
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="traffic-chart" class="agent-chart"></div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="../vendor/raphael/raphael.min.js"></script>
+    <script src="../vendor/morrisjs/morris.min.js"></script>
+    <script src="../js/classloading.js"></script>
+    <script src="../js/url.js"></script>
+    <script src="../js/errors.js"></script>
+    <script src="../js/traffic.js"></script>
+    <script src="../js/messages.js"></script>
+    <script src="../js/traces.js"></script>
+    <script src="../js/init.js"></script>
+	
+	<script src="../vendor/flot/excanvas.min.js"></script>
+    <script src="../vendor/flot/jquery.flot.js"></script>
+    <script src="../vendor/flot/jquery.flot.pie.js"></script>
+    <script src="../vendor/flot/jquery.flot.resize.js"></script>
+    <script src="../vendor/flot/jquery.flot.time.js"></script>
+    <script src="../vendor/flot-tooltip/jquery.flot.tooltip.min.js"></script>
+	
+	<script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
+    
+	<script src="http://malsup.github.io/jquery.blockUI.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+    
+</body>
+</html>
