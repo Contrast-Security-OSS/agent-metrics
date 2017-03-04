@@ -6,6 +6,10 @@ var cleanCSS = require('gulp-clean-css');
 var rename = require("gulp-rename");
 var uglify = require('gulp-uglify');
 var pkg = require('./package.json');
+var argv = require('yargs').argv;
+var fs = require('fs-extra');
+var decompress = require('gulp-decompress')
+var clean = require('gulp-clean')
 
 // Set the banner content
 var banner = ['/*!\n',
@@ -114,6 +118,26 @@ gulp.task('browserSync', function() {
 
 // Dev task with browserSync
 gulp.task('dev', ['browserSync', 'less', 'minify-css', 'js', 'minify-js'], function() {
+    if(argv.dir == undefined && argv.amf == undefined) {
+       console.log('Please --dir <dir> or --amf <file> to specify a directory where .log/.json/.dat files are stored to visualize')
+       process.exit(-1)
+    }
+    gulp.src('app/tmp', {read: false}).pipe(clean());
+    fs.mkdirs('data')
+    if(argv.amf != undefined) {
+      try {
+        gulp.src(argv.amf).pipe(decompress({strip:0})).pipe(gulp.dest('data'))
+      } catch(err) {
+        console.error(err)
+      }
+    } else if(argv.dir != undefined) {
+       try {
+          fs.copySync(argv.dir, 'data')
+          console.log("success!")
+       } catch (err) {
+          console.error(err)
+       }
+    } 
     gulp.watch('less/*.less', ['less']);
     gulp.watch('dist/css/*.css', ['minify-css']);
     gulp.watch('js/*.js', ['minify-js']);
