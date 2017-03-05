@@ -453,3 +453,6 @@ table.dataTable thead .sorting:after {
 td.has-stacktrace {
   cursor: pointer;
 }
+.toppad {
+  padding-top: 20px;
+}

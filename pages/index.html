@@ -55,8 +55,11 @@
                         <li>
                             <a href="javascript:void(0)" onclick="changeUrlView()"><i class="fa fa-cloud fa-fw"></i> URLs</a>
                         </li>
-                        <li>
+                        <li class="assess-data" style="display:none">
                             <a href="javascript:void(0)" onclick="changeTracesView()"><i class="fa fa-warning fa-fw"></i>Traces</a>
+                        </li>
+                        <li class="assess-data" style="display:none">
+                            <a href="javascript:void(0)" onclick="changePropagatorsView()"><i class="fa fa-link fa-fw"></i>Propagators</a>
                         </li>
                         <li>
                             <a href="javascript:void(0)" onclick="changeMessagesView()"><i class="fa fa-envelope-o fa-fw"></i>Messages</a>
@@ -327,6 +330,7 @@
     <script src="../js/traffic.js"></script>
     <script src="../js/messages.js"></script>
     <script src="../js/traces.js"></script>
+    <script src="../js/propagators.js"></script>
     <script src="../js/init.js"></script>
 	
 	<script src="../vendor/flot/excanvas.min.js"></script>

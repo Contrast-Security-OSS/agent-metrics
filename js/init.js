@@ -86,6 +86,12 @@ $(function() {
 				var feature = features[i]
 				$("#feature-list").append($("<li class='text-muted'>" + feature + "</li>"))
 			}
+			if(features.indexOf("Assess") != -1) {
+				$(".assess-data").show();
+			}
+			if(features.indexOf("Defend") != -1) {
+				$(".defend-data").show();
+			}
 		}
 	});
 	
