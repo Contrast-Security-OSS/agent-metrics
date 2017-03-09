@@ -178,7 +178,7 @@ gulp.task('watch', function ( ) {
 	gulp.watch('dist/js/*.js', browserSync.reload);
 });
 
-// Configure the browserSync task
+// Build the project and launch the application in the browser
 gulp.task('browserSync', ['minify-css', 'minify-js', 'copy', 'import-data-from-amf'], function ( ) {
 	browserSync.init({
 		server: {
@@ -186,8 +186,8 @@ gulp.task('browserSync', ['minify-css', 'minify-js', 'copy', 'import-data-from-a
 	});
 });
 
-// Builds static file assets
+// Builds static file assets.
 gulp.task('default', ['minify-css', 'minify-js', 'copy']);
 
-// Dev task with browserSync and file watching
+// Dev task - build the project and run the watch task.
 gulp.task('dev', ['browserSync', 'watch']);
