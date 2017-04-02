@@ -23,9 +23,7 @@
   ],
   "main": [
     "dist/css/sb-admin-2.css",
-    "dist/css/sb-admin-2.min.css",
-    "dist/js/sb-admin-2.js",
-    "dist/js/sb-admin-2.min.js"
+    "dist/js/sb-admin-2.js"
   ],
   "dependencies": {
     "bootstrap": "~3.3.7",
@@ -38,7 +36,9 @@
     "morrisjs": "~0.5.1",
     "datatables-responsive": "1.0.6",
     "bootstrap-social": "~4.8.0",
-    "flot.tooltip": "~0.8.4"
+    "flot.tooltip": "~0.8.4",
+    "ramda": "~0.23.0",
+    "sammy": "~0.7.6"
   },
   "resolutions": {
     "font-awesome": "~4.6.3"
