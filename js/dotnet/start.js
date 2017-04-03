@@ -13,14 +13,13 @@ timeline = [];
             context.render("homepage.template.html", model,
             function(view) {
                $(app.element_selector).html(view);
-               renderHomepageCharts(model);
+               renderHomepage(model);
             });
         });
 
         this.get("#/urls", function(context) {
             context.app.swap('');
             var model = {"myvar": "something"};
-            //this.partial('urls.template.html');
             context.render("urls.template.html", model,
             function(view) {
                $(app.element_selector).html(view);
@@ -28,18 +27,20 @@ timeline = [];
         });
 
         this.get("#/findings", function(context) {
-            var model = {item: "something"};
+            var model = buildFindingsModel();
             context.render("findings.template.html", model,
             function(view) {
                $(app.element_selector).html(view);
+               renderFindings(model);
             });
         });
 
         this.get("#/pipeMessages", function(context) {
-            var model = {item: "something"};
+            var model = buildPipeMessageModel();
             context.render("pipeMessages.template.html", model,
             function(view) {
                $(app.element_selector).html(view);
+               renderPipeMessages(model);
             });
         });
 
@@ -52,18 +53,22 @@ timeline = [];
         });
 
         this.get("#/errors", function(context) {
-            var model = {item: "something"};
-            context.render("errors.template.html", model,
-            function(view) {
-               $(app.element_selector).html(view);
+            $.getJSON('/data/errors.json', function(data) {
+                var model = buildErrorsModel(data);
+                context.render("errors.template.html", model,
+                function(view) {
+                    $(app.element_selector).html(view);
+                    renderErrors(model);
+                });
             });
+            
         });
         
 
     });
 
     
-    $.getJSON('/data/timeline2.json', function(response) {
+    $.getJSON('/data/timeline-dotnet.json', function(response) {
 		$.unblockUI();
 		timeline = response;
 		
@@ -111,123 +116,4 @@ function bucketizeByDate(bucketCount, createFn, accumFn) {
 
         return buckets;
     }
-}
-
-function buildHomepageModel() {
-
-    var selectUrls = R.filter(d => d.category == "RequestAnalysis");
-    var selectPipeMessages = R.filter(d => d.category == "SensorMsgPipe");
-    var selectTraces = R.filter(d => d.category == "TraceFate");
-    var selectTeamServerMessages = R.filter(d => d.category == "TeamServerMessage");
-
-    var orderByTime = R.sortBy(R.prop("time")); 
-	
-    var startTotal = function() { return { "total": 0 }};
-    var startFinding = function() { 
-        return {
-            "NewFinding": 0,
-            "LocalCacheHit": 0,
-            "LateStageSuppress": 0,
-            "Preflighted" : 0
-        } 
-    };
-    var startPipeMessage = function() {
-        return {
-            "NewRequestEndUrl": 0,
-            "NewFinding": 0,
-            "ModuleResponseMessage": 0,
-            "NewResponseHeader" : 0,
-            "Other": 0
-        }
-    }
-
-    var countTotal = (bucket, data) => bucket.total++;
-
-    var countFindingByType = function(bucket, data) {
-        bucket[data.subcategory] ++;        
-    };
-    var countPipeMessageByType = function(bucket, data) {
-        if(data.subcategory == "NewRequestEndUrl")
-            bucket["NewRequestEndUrl"]++;
-        else if(data.subcategory == "NewFinding")
-            bucket["NewFinding"]++;
-        else if(data.subcategory == "ModuleResponseMessage")
-            bucket["ModuleResponseMessage"]++;
-        else if(data.subcategory == "NewResponseHeader")
-            bucket["NewResponseHeader"]++;
-        else
-            bucket["Other"]++;
-    }
-
-    
-    let urlData = selectUrls(timeline);
-    let urlStats = calcRateStats(urlData);
-
-    let pipeData = selectPipeMessages(timeline);
-    let pipeStats = calcRateStats(pipeData);
-
-    let traceData = selectTraces(timeline);
-    let traceStats  = calcRateStats(traceData);
-
-    var getUrlChart = R.pipe(() => urlData, orderByTime, bucketizeByDate(40, startTotal, countTotal));
-    var getPipeChart = R.pipe(() => pipeData, orderByTime, bucketizeByDate(30, startPipeMessage, countPipeMessageByType));
-    var getTraceChart = R.pipe(() => traceData, orderByTime, bucketizeByDate(40, startFinding, countFindingByType));
-    
-    
-
-    return {
-        urlStats: urlStats,
-        urls: getUrlChart(timeline),
-        pipeMessages: getPipeChart(timeline),
-        pipeStats: pipeStats,
-        traces: getTraceChart(timeline),
-        traceStats: traceStats
-    };
-}
-
-function calcRateStats(data) {
-    let total = addCommas(data.length);    
-    let rate = round((data.length * 1000)/(data[data.length-1].time - data[0].time)) + "/second";
-    return {
-        total: total,
-        rate: rate
-    }
-}
-
-function renderHomepageCharts(model) {
-    
-    Morris.Area({
-        element: 'url-chart',
-        data: model.urls,
-        xkey: 'time',
-        ykeys: ['total'],
-        labels: ['URLs Hit'],
-        pointSize: 2,
-        hideHover: 'auto',
-        resize: true
-    });
-
-    Morris.Area({
-        element: 'trace-chart',
-        data: model.traces,
-        xkey: 'time',
-        ykeys: ['NewFinding', 'LocalCacheHit', 'LateStageSuppress', 'Preflighted'],
-        labels: ['New', 'Local Cache', 'Late Stage Suppress', 'Preflighted'],
-        pointSize: 2,
-        hideHover: 'auto',
-        resize: true
-    });
-
-    Morris.Area({
-        element: 'pipe-chart',
-        data: model.pipeMessages,
-        xkey: 'time',
-        ykeys: ['NewRequestEndUrl', "NewFinding", "ModuleResponseMessage", "NewResponseHeader", "Other"],
-        labels: ['NewRequestEndUrl', "NewFinding", "ModuleResponseMessage", "NewResponseHeader", "Other"],
-        pointSize: 2,
-        hideHover: 'auto',
-        resize: true
-    });
-
-
 }

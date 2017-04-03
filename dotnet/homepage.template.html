@@ -45,9 +45,9 @@
                         <i class="fa fa-warning fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div id="total-traces" class="huge"><%= pipeStats.total %></div>
+                        <div id="total-traces" class="huge"><%= traceStats.total %></div>
                         <div>Findings</div>
-                        <div id="rate-traces"><%= pipeStats.rate %></div>
+                        <div id="rate-traces"><%= traceStats.rate %></div>
                     </div>
                 </div>
             </div>
@@ -81,9 +81,9 @@
                         <i class="fa fa-envelope-o fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div id="total-messages" class="huge"><%= traceStats.total %></div>
+                        <div id="total-messages" class="huge"><%= pipeStats.total %></div>
                         <div>Pipe Messages</div>
-                        <div id="rate-messages"><%= traceStats.rate %></div>
+                        <div id="rate-messages"><%= pipeStats.rate %></div>
                     </div>
                 </div>
             </div>
@@ -117,13 +117,13 @@
                         <i class="fa fa-bar-chart-o fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div id="total-traffic" class="huge"></div>
-                        <div>Message Traffic</div>
-                        <div id="rate-traffic"></div>
+                        <div id="total-messages" class="huge"><%= tsStats.total %></div>
+                        <div>TeamServer Requests</div>
+                        <div id="rate-messages"><%= tsStats.rate %></div>
                     </div>
                 </div>
             </div>
-            <a href="javascript:void(0)" onclick="changeTrafficView()">
+            <a href="#/teamserver">
                 <div class="panel-footer">
                     <span class="pull-left">View Details</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -135,10 +135,10 @@
     <div class="col-lg-9 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-bar-chart-o fa-fw"></i> Outbound Traffic During Run
+                <i class="fa fa-bar-chart-o fa-fw"></i> Outbound TeamServer Requets
             </div>
             <div class="panel-body">
-                <div id="traffic-chart" class="agent-chart"></div>
+                <div id="tsMessages-chart" class="agent-chart"></div>
             </div>
         </div>
     </div>
