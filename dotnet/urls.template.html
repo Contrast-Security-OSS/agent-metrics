@@ -8,9 +8,9 @@
                         <i class="fa fa-cloud fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div id="total-urls" class="huge"></div>
+                        <div id="total-urls" class="huge"><%= urlStats.total %></div>
                         <div>URLs Hit</div>
-                        <div id="rate-urls"></div>
+                        <div id="rate-urls"><%= urlStats.rate %></div>
                     </div>
                 </div>
             </div>
@@ -36,16 +36,6 @@
             </div>
             <div class="panel-body">
                 <table width="100%" class="table table-striped table-bordered table-hover hover" id="url-table">
-                    <thead>
-                        <tr>
-                        	<th>Time</th>
-                            <th>Class</th>
-                            <th>Result</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                    </tbody>
                 </table>
             </div>
         </div>

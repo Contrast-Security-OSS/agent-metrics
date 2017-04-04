@@ -5,12 +5,12 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-cloud fa-5x"></i>
+                        <i class="fa fa-bar-chart-o fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div id="total-urls" class="huge"></div>
+                        <div id="total-messages" class="huge"><%= tsStats.total %></div>
                         <div>TeamServer Requests</div>
-                        <div id="rate-urls"></div>
+                        <div id="rate-messages"><%= tsStats.rate %></div>
                     </div>
                 </div>
             </div>
@@ -19,10 +19,10 @@
     <div class="col-lg-9 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-cloud fa-fw"></i> URLs Observed During Run
+                <i class="fa fa-bar-chart-o fa-fw"></i> Outbound TeamServer Requests
             </div>
             <div class="panel-body">  
-                <div id="url-chart" class="agent-chart"></div>
+                <div id="ts-chart" class="agent-chart"></div>
             </div>
         </div>
     </div>
@@ -35,17 +35,7 @@
                 URLs Monitored
             </div>
             <div class="panel-body">
-                <table width="100%" class="table table-striped table-bordered table-hover hover" id="url-table">
-                    <thead>
-                        <tr>
-                        	<th>Time</th>
-                            <th>Class</th>
-                            <th>Result</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                    </tbody>
+                <table width="100%" class="table table-striped table-bordered table-hover hover" id="ts-table">
                 </table>
             </div>
         </div>
