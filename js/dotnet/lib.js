@@ -27,7 +27,7 @@ function bucketizeByDate(bucketCount, createFn, accumFn) {
         var first = data[0];
         var last = data[data.length - 1];
         var elapsed = last.time - first.time;
-        var stepSize = elapsed / bucketCount
+        var stepSize = Math.ceil(elapsed / bucketCount);
         
         // temp variables when looking at each bucket
         var bucketTotal = 0;

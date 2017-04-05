@@ -16,7 +16,6 @@ controllers.urls = {
             let t = urlData[i];
             urlTable.push(new Array(new Date(t.time), t.appName, t.subcategory, t.properties["url"]));
         }
-        console.log(urlData);
 
         return {
             urlStats: urlStats,

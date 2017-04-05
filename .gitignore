@@ -2,6 +2,7 @@ node_modules
 data
 target
 bower_components
+dist
 .vscode
 .settings
 .project

@@ -71,19 +71,6 @@ gulp.task('minify-js', ['js'], function ( taskDone ) {
 		.on('finish', taskDone);
 });
 
-gulp.task('minify-js-all', ['js'], function ( taskDone ) {
-	gulp.src('js/*.js')
-		.pipe(concat('all.js'))
-		//.pipe(uglify())
-		.pipe(header(banner, { pkg: pkg }))
-		//.pipe(rename({ suffix: '.min' }))
-		.pipe(gulp.dest('dist/js'))
-		.pipe(browserSync.reload({
-			stream: true
-		}))
-		.on('finish', taskDone);
-});
-
 gulp.task('minify-js-dotnet', ['js'], function ( taskDone ) {
 	gulp.src('js/dotnet/*.js')
 		.pipe(concat('dotnet-all.js'))
@@ -209,7 +196,6 @@ gulp.task('import-data-from-amf', function ( taskDone ) {
 gulp.task('watch', function ( ) {
 	gulp.watch('less/*.less', ['less']);
 	gulp.watch('dist/css/*.css', ['minify-css']);
-	gulp.watch('js/*.js', ['minify-js-all']);
 	gulp.watch('js/dotnet/*.js', ['minify-js-dotnet']);
 	// Reloads the browser whenever HTML or JS files change
 	gulp.watch('pages/*.html', browserSync.reload);
@@ -218,7 +204,7 @@ gulp.task('watch', function ( ) {
 });
 
 // Build the project and launch the application in the browser
-gulp.task('browserSync', ['minify-css', 'minify-js-all', 'minify-js-dotnet', 'copy', 'import-data-from-amf'], function ( ) {
+gulp.task('browserSync', ['minify-css', 'minify-js-dotnet', 'copy', 'import-data-from-amf'], function ( ) {
 	browserSync.init({
 		server: {
 			baseDir: '' }
