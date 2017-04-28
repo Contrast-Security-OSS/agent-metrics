@@ -1,3 +1,3 @@
-fulltimeline = [];
+fullTimeline = [];
 timeline = [];
 controllers = {};
