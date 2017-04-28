@@ -29,7 +29,7 @@ controllers.pipeMessages = {
         }
 
         let countUtilization = function (bucket, data) {
-            bucket["bytes"] += parseInt(data.properties["len"]);
+            bucket["bytes"] += parseInt(data.properties["len"] || "0");
         }
 
         let pipeData = selectPipeMessages(timeline);
@@ -44,6 +44,8 @@ controllers.pipeMessages = {
         var stepSize = elapsed / 80 / 1000;
         console.log(first, last, elapsed, stepSize);
         
+        console.log("utChart", getUtilizationChart());
+
         let fixedUtilizationData = getUtilizationChart().map(
             function (r) {
                 return {
@@ -59,7 +61,8 @@ controllers.pipeMessages = {
         let pipeTable = new Array();
         for (var i = 0; i < pipeData.length; ++i) {
             let t = pipeData[i];
-            pipeTable.push(new Array(new Date(t.time), t.appName, t.subcategory, t.properties["len"]));
+            let date = moment(t.time).format("MMM Do, h:mm:ss a");
+            pipeTable.push(new Array(date, t.appName, t.subcategory, t.properties["len"] || "0"));
         }
         return {
             pipeTable: pipeTable,

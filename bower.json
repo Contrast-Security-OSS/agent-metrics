@@ -38,7 +38,8 @@
     "bootstrap-social": "~4.8.0",
     "flot.tooltip": "~0.8.4",
     "ramda": "~0.23.0",
-    "sammy": "~0.7.6"
+    "sammy": "~0.7.6",
+    "moment": "^2.18.1"
   },
   "resolutions": {
     "font-awesome": "~4.6.3"

@@ -14,7 +14,8 @@ controllers.urls = {
         let urlTable = new Array();
         for (var i = 0; i < urlData.length; ++i) {
             let t = urlData[i];
-            urlTable.push(new Array(new Date(t.time), t.appName, t.subcategory, t.properties["url"]));
+            let date = moment(t.time).format("MMM Do, h:mm:ss a");
+            urlTable.push(new Array(date, t.appName, t.subcategory, t.properties["url"]));
         }
 
         return {

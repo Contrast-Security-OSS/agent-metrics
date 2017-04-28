@@ -16,7 +16,8 @@ controllers.teamserver = {
         let tsTable = new Array();
         for (let i = 0; i < tsData.length; ++i) {
             let t = tsData[i];
-            tsTable.push(new Array(new Date(t.time), t.appName, t.subcategory, t.properties["time"] || "0"));
+            let date = moment(t.time).format("MMM Do, h:mm:ss a");
+            tsTable.push(new Array(date, t.appName, t.subcategory, t.properties["time"] || "0"));
         }
 
         console.log(tsData);

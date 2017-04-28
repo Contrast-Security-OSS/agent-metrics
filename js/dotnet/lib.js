@@ -23,6 +23,11 @@ function fmtDate(s) {
 function bucketizeByDate(bucketCount, createFn, accumFn) {
     return function(data) {
 
+        if(data.length == 0)
+            return Array();
+        if(data.length == 1) 
+            return [ { time: data[0].time }];
+            
         // calculate the time between data points
         var first = data[0];
         var last = data[data.length - 1];

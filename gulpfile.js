@@ -156,6 +156,11 @@ gulp.task('copy', function ( taskDone ) {
 			gulp.src(['bower_components/sammy/lib/min/sammy-latest.min.js', 'bower_components/sammy/lib/min/plugins/sammy.template-latest.min.js'])
 				.pipe(gulp.dest('vendor/sammy'))
 				.on('finish', finish);
+		},
+		function ( finish ) {
+			gulp.src(['bower_components/moment/min/moment.min.js'])
+				.pipe(gulp.dest('vendor/moment'))
+				.on('finish', finish);
 		}
 	], taskDone);
 });

@@ -128,7 +128,7 @@ controllers.homepage = {
 
 function calcRateStats(data) {
     let total = addCommas(data.length);
-    let rate = round((data.length * 1000) / (data[data.length - 1].time - data[0].time)) + "/second";
+    let rate = (data.length < 2) ? 0 : round((data.length * 1000) / (data[data.length - 1].time - data[0].time)) + "/second";
     return {
         total: total,
         rate: rate

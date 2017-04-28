@@ -42,7 +42,8 @@
         <!-- Navigation -->
         <nav class="navbar navbar-default" role="navigation" style="margin-bottom: 0">
         	<div class="navbar-header">
-        	<span class="navbar-brand"><img width=25 height=25 src="https://cdn2.hubspot.net/hubfs/203759/Contrast_Security-2016/Image/LOGO-ICONbugContrast1016.png"></span><span class="navbar-brand" id="teamserver-user"></span> <span class="navbar-brand" id="teamserver-url"></span></div>
+        	<span class="navbar-brand"><img width=25 height=25 src="https://cdn2.hubspot.net/hubfs/203759/Contrast_Security-2016/Image/LOGO-ICONbugContrast1016.png"></span>
+            <span class="navbar-brand" id="report-name">.NET Agent Metrics Report - All Apps</span> 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
@@ -66,7 +67,15 @@
                         </li>
                     </ul>
                 </div>
-               
+<!--
+                <div id="app-list" style="padding-left:20px;padding-right:10px">
+                	                	
+                </div>-->
+
+                <div id="app-list">
+
+                </div>
+<!--               
                 <div style="padding-left:20px;padding-right:10px">
                 	<h3 id="web-container"></h3>
                 	<div>
@@ -94,7 +103,7 @@
                 		<ul id="feature-list">
                 		</ul>
                 	</div>
-                </div>
+                </div>-->
             </div>
         </nav>
 
@@ -109,6 +118,8 @@
 
     <script src="../vendor/sammy/sammy-latest.min.js"></script>
     <script src="../vendor/sammy/sammy.template-latest.min.js"></script>
+
+    <script src="../vendor/moment/moment.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>

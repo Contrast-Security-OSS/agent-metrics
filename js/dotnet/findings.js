@@ -41,7 +41,8 @@ controllers.findings = {
         let traceTable = new Array();
         for (var i = 0; i < traceData.length; ++i) {
             let t = traceData[i];
-            traceTable.push(new Array(new Date(t.time), t.appName, t.properties["ruleId"], t.subcategory));
+            let date = moment(t.time).format("MMM Do, h:mm:ss a");
+            traceTable.push(new Array(date, t.appName, t.properties["ruleId"], t.subcategory));
         }
         console.log(traceData);
         return {

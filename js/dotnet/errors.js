@@ -5,7 +5,8 @@ controllers.errors = {
         for (var i = 0; i < data.length; i++) {
             var error = data[i]
             let errorMessage = error.message + " [" + error.fileName + "]";
-            errorTableRows.push(new Array(new Date(error.time), error.logLevel, error.threadId, errorMessage));
+            let date = moment(error.time).format("MMM Do, h:mm:ss a");
+            errorTableRows.push(new Array(date, error.logLevel, error.threadId, errorMessage));
         }
 
         return {
