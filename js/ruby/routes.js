@@ -113,7 +113,7 @@
     });
 
     
-    $.getJSON('/data/timeline-dotnet.json', function(response) {
+    $.getJSON('/data/timeline-ruby.json', function(response) {
 		$.unblockUI();
         fullTimeline = response;
 		timeline = response;

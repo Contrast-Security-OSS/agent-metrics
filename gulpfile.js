@@ -84,6 +84,19 @@ gulp.task('minify-js-dotnet', ['js'], function ( taskDone ) {
 		.on('finish', taskDone);
 });
 
+gulp.task('minify-js-ruby', ['js'], function ( taskDone ) {
+    gulp.src('js/ruby/*.js')
+        .pipe(concat('ruby-all.js'))
+        //.pipe(uglify())
+        .pipe(header(banner, { pkg: pkg }))
+        //.pipe(rename({ suffix: '.min' }))
+        .pipe(gulp.dest('dist/js'))
+        .pipe(browserSync.reload({
+            stream: true
+        }))
+        .on('finish', taskDone);
+});
+
 // Copy vendor libraries from /bower_components into /vendor
 gulp.task('copy', function ( taskDone ) {
 	asyn.parallel([
@@ -202,6 +215,8 @@ gulp.task('watch', function ( ) {
 	gulp.watch('less/*.less', ['less']);
 	gulp.watch('dist/css/*.css', ['minify-css']);
 	gulp.watch('js/dotnet/*.js', ['minify-js-dotnet']);
+	gulp.watch('js/ruby/*.js', ['minify-js-ruby']);
+
 	// Reloads the browser whenever HTML or JS files change
 	gulp.watch('pages/*.html', browserSync.reload);
 	gulp.watch('dotnet/*.html', browserSync.reload);
@@ -209,7 +224,7 @@ gulp.task('watch', function ( ) {
 });
 
 // Build the project and launch the application in the browser
-gulp.task('browserSync', ['minify-css', 'minify-js-dotnet', 'copy', 'import-data-from-amf'], function ( ) {
+gulp.task('browserSync', ['minify-css', 'minify-js-dotnet','minify-js-ruby', 'copy', 'import-data-from-amf'], function ( ) {
 	browserSync.init({
 		server: {
 			baseDir: '' }
