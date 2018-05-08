@@ -227,7 +227,7 @@ gulp.task('watch', function ( ) {
 gulp.task('browserSync', ['minify-css', 'minify-js-dotnet','minify-js-ruby', 'copy', 'import-data-from-amf'], function ( ) {
 	browserSync.init({
 		server: {
-			baseDir: '' }
+			baseDir: '.' }
 	});
 });
 
