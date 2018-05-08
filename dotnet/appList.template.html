@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-bell fa-fw"></i> Applications (<%= apps.length %>)
+    </div>
+    <!-- /.panel-heading -->
+    <div class="panel-body">
+        
+        <div id="grpAppLinks" class="list-group">
+
+            <% for(var i=0; i < apps.length; i++) { %>
+
+            <a id="lnkApp_<%=apps[i]%>" href="#/selectApp/<%=apps[i]%>" class="list-group-item">
+                <%= apps[i] || 'N/A' %>
+                <!--<span class="pull-right text-muted small"><em>4 minutes ago</em></span>-->
+            </a>
+
+            <% } %>
+            
+        </div>
+        <a href="#/selectAllApps" class="btn btn-default btn-block"><strong>View All Apps</strong></a>
+    </div>
+    
+</div>

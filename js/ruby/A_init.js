@@ -1,0 +1,3 @@
+fullTimeline = [];
+timeline = [];
+controllers = {};
