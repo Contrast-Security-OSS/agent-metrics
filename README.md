@@ -22,7 +22,8 @@ The first time you use it, you'll have to run these commands in the cloned direc
 	npm install gulp-rename
 	npm install gulp-uglify
 	npm install gulp-clean
-	npm install gulp-decompress`
+	npm install gulp-decompress
+	npm install gulp-concat
 
 ## Running the Agent Metrics app
 
