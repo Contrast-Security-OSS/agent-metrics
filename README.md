@@ -15,20 +15,8 @@ This will generate a file, javaaagent-1XXXXX.amf in the current directory. This 
 
 The first time you use it, you'll have to run these commands in the cloned directory:
 
-<<<<<<< HEAD
 	npm install
 	bower install
-=======
-	npm install gulp-less
-	npm install browser-sync
-	npm install gulp-header
-	npm install gulp-clean-css
-	npm install gulp-rename
-	npm install gulp-uglify
-	npm install gulp-clean
-	npm install gulp-decompress
-	npm install gulp-concat
->>>>>>> 82bbd7480d79e8a67b1193bd07781779d9a9dd81
 
 ## Running the Agent Metrics app
 
