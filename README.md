@@ -20,7 +20,7 @@ The first time you use it, you'll have to run these commands in the cloned direc
 
 ## Running the Agent Metrics app
 
-Once the node modules are installed, you can just run:
+Once the node modules are installed, you can just run:  
 
 `gulp dev --amf /path/to/fileName-1XXX.amf`
 
