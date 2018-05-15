@@ -15,19 +15,15 @@ This will generate a file, javaaagent-1XXXXX.amf in the current directory. This 
 
 The first time you use it, you'll have to run these commands in the cloned directory:
 
-	npm install gulp-less
-	npm install browser-sync
-	npm install gulp-header
-	npm install gulp-clean-css
-	npm install gulp-rename
-	npm install gulp-uglify
-	npm install gulp-clean
-	npm install gulp-decompress`
+	npm install
+	bower install
 
 ## Running the Agent Metrics app
 
-Once the node modules are installed, you can just run:
+Once the node modules are installed, you can just run:  
 
-`gulp dev --amf /path/to/javaagent-1XXX.amf`
+`gulp dev --amf /path/to/fileName-1XXX.amf`
 
 This run will only contain data for the log generated from the given time.
+
+Each agent language currently has a different viewer page, so choose 'Java Agent', 'Dotnet Agent' or 'Ruby Agent' on the homepage that loads.

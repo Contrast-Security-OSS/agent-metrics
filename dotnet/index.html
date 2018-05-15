@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Agent Log Analysis</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default" role="navigation" style="margin-bottom: 0">
+        	<div class="navbar-header">
+        	<span class="navbar-brand"><img width=25 height=25 src="https://cdn2.hubspot.net/hubfs/203759/Contrast_Security-2016/Image/LOGO-ICONbugContrast1016.png"></span>
+            <span class="navbar-brand" id="report-name">.NET Agent Metrics Report - All Apps</span> 
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="#/"><i class="fa fa-dashboard fa-fw"></i> Overview</a>
+                        </li>
+                        <li>
+                            <a href="#/findings"><i class="fa fa-file-code-o fa-fw"></i> Findings</a>
+                        </li>
+                        <li>
+                            <a href="#/urls"><i class="fa fa-cloud fa-fw"></i> URLs</a>
+                        </li>
+                        <li>
+                            <a href="#/teamserver"><i class="fa fa-envelope-o fa-fw"></i> TeamServer</a>
+                        </li>
+                        <li>
+                            <a href="#/pipeMessages"><i class="fa fa-bar-chart-o fa-fw"></i> Pipe Messages</a>
+                        </li>
+                        <li>
+                            <a href="#/errors"><i class="fa fa-exclamation fa-fw"></i> Errors / Warnings</a>
+                        </li>
+                    </ul>
+                </div>
+<!--
+                <div id="app-list" style="padding-left:20px;padding-right:10px">
+                	                	
+                </div>-->
+
+                <div id="app-list">
+
+                </div>
+<!--               
+                <div style="padding-left:20px;padding-right:10px">
+                	<h3 id="web-container"></h3>
+                	<div>
+                		<p><b>Log Range</b></p>
+                		<p class="text-muted" id="log-start"></p>
+                		<p class="text-muted" id="log-end"></p>
+                	</div>
+                	<div>
+                		<p><b>JVM</b></p>
+                		<p class="text-muted" id="jvm-version"></p>
+                		<p class="text-muted" id="jvm-name"></p>
+                	</div>
+                	<div>
+                		<p><b>Agent</b></p>
+                		<p class="text-muted" id="agent-version"></p>
+                		<p class="text-muted" id="agent-build-time"></p>
+                	</div>
+                	<div>
+                		<p><b>Applications</b></p>
+                		<ul id="app-list">
+                		</ul>
+                	</div>
+                	<div id="feature-content" style="display:none">
+                		<p><b>Features</b></p>
+                		<ul id="feature-list">
+                		</ul>
+                	</div>
+                </div>-->
+            </div>
+        </nav>
+
+        <div id="page-wrapper">
+
+        </div>
+
+    </div>
+   
+    <!-- jQuery -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+
+    <script src="../vendor/sammy/sammy-latest.min.js"></script>
+    <script src="../vendor/sammy/sammy.template-latest.min.js"></script>
+
+    <script src="../vendor/moment/moment.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="../vendor/raphael/raphael.min.js"></script>
+    <script src="../vendor/morrisjs/morris.min.js"></script>
+    <!--<script src="../js/classloading.js"></script>
+    <script src="../js/url.js"></script>
+    <script src="../js/errors.js"></script>
+    <script src="../js/traffic.js"></script>
+    <script src="../js/messages.js"></script>
+    <script src="../js/traces.js"></script>
+    <script src="../js/propagators.js"></script>
+    <script src="../js/init.js"></script>-->
+    <script src="../dist/js/dotnet-all.js"></script>  
+	
+	<script src="../vendor/flot/excanvas.min.js"></script>
+    <script src="../vendor/flot/jquery.flot.js"></script>
+    <script src="../vendor/flot/jquery.flot.pie.js"></script>
+    <script src="../vendor/flot/jquery.flot.resize.js"></script>
+    <script src="../vendor/flot/jquery.flot.time.js"></script>
+    <script src="../vendor/flot-tooltip/jquery.flot.tooltip.min.js"></script>
+	
+	<script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
+
+    <script src="../vendor/ramda/ramda.min.js"></script>
+    
+	<script src="http://malsup.github.io/jquery.blockUI.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+    
+</body>
+</html>

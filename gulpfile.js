@@ -11,6 +11,7 @@ var argv = require('yargs').argv;
 var fs = require('fs-extra');
 var decompress = require('gulp-decompress');
 var clean = require('gulp-clean');
+var concat = require('gulp-concat');
 
 // Set the banner content
 var banner = [
@@ -23,7 +24,7 @@ var banner = [
 ].join('');
 
 // Compile LESS files from /less into /css
-gulp.task('less', function ( cb ) {
+gulp.task('less', function ( taskDone ) {
 	gulp.src('less/sb-admin-2.less')
 		.pipe(less())
 		.pipe(header(banner, { pkg: pkg }))
@@ -31,11 +32,11 @@ gulp.task('less', function ( cb ) {
 		.pipe(browserSync.reload({
 			stream: true
 		}))
-		.on('finish', cb);
+		.on('finish', taskDone);
 });
 
 // Minify compiled CSS
-gulp.task('minify-css', ['less'], function ( cb ) {
+gulp.task('minify-css', ['less'], function ( taskDone ) {
 	gulp.src('dist/css/sb-admin-2.css')
 		.pipe(cleanCSS({ compatibility: 'ie8' }))
 		.pipe(rename({ suffix: '.min' }))
@@ -43,22 +44,22 @@ gulp.task('minify-css', ['less'], function ( cb ) {
 		.pipe(browserSync.reload({
 			stream: true
 		}))
-		.on('finish', cb);
+		.on('finish', taskDone);
 });
 
 // Copy JS to dist
-gulp.task('js', function ( cb ) {
+gulp.task('js', function ( taskDone ) {
 	gulp.src(['js/sb-admin-2.js'])
 		.pipe(header(banner, { pkg: pkg }))
 		.pipe(gulp.dest('dist/js'))
 		.pipe(browserSync.reload({
 			stream: true
 		}))
-		.on('finish', cb);
+		.on('finish', taskDone);
 });
 
 // Minify JS
-gulp.task('minify-js', ['js'], function ( cb ) {
+gulp.task('minify-js', ['js'], function ( taskDone ) {
 	gulp.src('js/sb-admin-2.js')
 		.pipe(uglify())
 		.pipe(header(banner, { pkg: pkg }))
@@ -67,76 +68,118 @@ gulp.task('minify-js', ['js'], function ( cb ) {
 		.pipe(browserSync.reload({
 			stream: true
 		}))
-		.on('finish', cb);
+		.on('finish', taskDone);
+});
+
+gulp.task('minify-js-dotnet', ['js'], function ( taskDone ) {
+	gulp.src('js/dotnet/*.js')
+		.pipe(concat('dotnet-all.js'))
+		//.pipe(uglify())
+		.pipe(header(banner, { pkg: pkg }))
+		//.pipe(rename({ suffix: '.min' }))
+		.pipe(gulp.dest('dist/js'))
+		.pipe(browserSync.reload({
+			stream: true
+		}))
+		.on('finish', taskDone);
+});
+
+gulp.task('minify-js-ruby', ['js'], function ( taskDone ) {
+    gulp.src('js/ruby/*.js')
+        .pipe(concat('ruby-all.js'))
+        //.pipe(uglify())
+        .pipe(header(banner, { pkg: pkg }))
+        //.pipe(rename({ suffix: '.min' }))
+        .pipe(gulp.dest('dist/js'))
+        .pipe(browserSync.reload({
+            stream: true
+        }))
+        .on('finish', taskDone);
 });
 
 // Copy vendor libraries from /bower_components into /vendor
-gulp.task('copy', function ( cb ) {
+gulp.task('copy', function ( taskDone ) {
 	asyn.parallel([
-		function ( done ) {
+		function ( finish ) {
 			gulp.src(['bower_components/bootstrap/dist/**/*', '!**/npm.js', '!**/bootstrap-theme.*', '!**/*.map'])
 				.pipe(gulp.dest('vendor/bootstrap'))
-				.on('end', done);
+				.on('finish', finish);
 		},
-		function ( done ) {
+		function ( finish ) {
 			gulp.src(['bower_components/bootstrap-social/*.css', 'bower_components/bootstrap-social/*.less', 'bower_components/bootstrap-social/*.scss'])
 				.pipe(gulp.dest('vendor/bootstrap-social'))
-				.on('end', done);
+				.on('finish', finish);
 		},
-		function ( done ) {
+		function ( finish ) {
 			gulp.src(['bower_components/datatables/media/**/*'])
 				.pipe(gulp.dest('vendor/datatables'))
-				.on('end', done);
+				.on('finish', finish);
 		},
-		function ( done ) {
+		function ( finish ) {
 			gulp.src(['bower_components/datatables-plugins/integration/bootstrap/3/*'])
 				.pipe(gulp.dest('vendor/datatables-plugins'))
-				.on('end', done);
+				.on('finish', finish);
 		},
-		function ( done ) {
+		function ( finish ) {
 			gulp.src(['bower_components/datatables-responsive/css/*', 'bower_components/datatables-responsive/js/*'])
 				.pipe(gulp.dest('vendor/datatables-responsive'))
-				.on('end', done);
+				.on('finish', finish);
 		},
-		function ( done ) {
+		function ( finish ) {
 			gulp.src(['bower_components/flot/*.js'])
 				.pipe(gulp.dest('vendor/flot'))
-				.on('end', done);
+				.on('finish', finish);
 		},
-		function ( done ) {
+		function ( finish ) {
 			gulp.src(['bower_components/flot.tooltip/js/*.js'])
 				.pipe(gulp.dest('vendor/flot-tooltip'))
-				.on('end', done);
+				.on('finish', finish);
 		},
-		function ( done ) {
+		function ( finish ) {
 			gulp.src(['bower_components/font-awesome/**/*', '!bower_components/font-awesome/*.json', '!bower_components/font-awesome/.*'])
 				.pipe(gulp.dest('vendor/font-awesome'))
-				.on('end', done);
+				.on('finish', finish);
 		},
-		function ( done ) {
+		function ( finish ) {
 			gulp.src(['bower_components/jquery/dist/jquery.js', 'bower_components/jquery/dist/jquery.min.js'])
 				.pipe(gulp.dest('vendor/jquery'))
-				.on('end', done);
+				.on('finish', finish);
 		},
-		function ( done ) {
+		function ( finish ) {
 			gulp.src(['bower_components/metisMenu/dist/*'])
 				.pipe(gulp.dest('vendor/metisMenu'))
-				.on('end', done);
+				.on('finish', finish);
 		},
-		function ( done ) {
+		function ( finish ) {
 			gulp.src(['bower_components/morrisjs/*.js', 'bower_components/morrisjs/*.css', '!bower_components/morrisjs/Gruntfile.js'])
 				.pipe(gulp.dest('vendor/morrisjs'))
-				.on('end', done);
+				.on('finish', finish);
 		},
-		function ( done ) {
+		function ( finish ) {
 			gulp.src(['bower_components/raphael/raphael.js', 'bower_components/raphael/raphael.min.js'])
 				.pipe(gulp.dest('vendor/raphael'))
-				.on('end', done);
+				.on('finish', finish);
+		},
+		function ( finish ) {
+			gulp.src(['bower_components/ramda/dist/*.js'])
+				.pipe(gulp.dest('vendor/ramda'))
+				.on('finish', finish);
+		},
+		function ( finish ) {
+			gulp.src(['bower_components/sammy/lib/min/sammy-latest.min.js', 'bower_components/sammy/lib/min/plugins/sammy.template-latest.min.js'])
+				.pipe(gulp.dest('vendor/sammy'))
+				.on('finish', finish);
+		},
+		function ( finish ) {
+			gulp.src(['bower_components/moment/min/moment.min.js'])
+				.pipe(gulp.dest('vendor/moment'))
+				.on('finish', finish);
 		}
-	], cb);
+	], taskDone);
 });
 
-gulp.task('data-files', function ( cb ) {
+// import the data from the .amf file for use in the application
+gulp.task('import-data-from-amf', function ( taskDone ) {
 	if (argv.dir == undefined && argv.amf == undefined) {
 		console.log('Please --dir <dir> or --amf <file> to specify a directory where .log/.json/.dat files are stored to visualize');
 		process.exit(-1);
@@ -164,58 +207,32 @@ gulp.task('data-files', function ( cb ) {
 				done();
 			}
 		}
-	], cb);
+	], taskDone);
 });
 
-// Run everything
-gulp.task('default', ['minify-css', 'minify-js', 'copy']);
-
-// Configure the browserSync task
-gulp.task('browserSync', ['minify-css', 'minify-js', 'copy', 'data-files'], function ( ) {
-	browserSync.init({
-		server: {
-			baseDir: ''
-		}
-	});
-});
-
-// Dev task with browserSync and file watching
-gulp.task('dev', ['browserSync'], function ( ) {
+// Watch files for changes and perform a reload
+gulp.task('watch', function ( ) {
 	gulp.watch('less/*.less', ['less']);
 	gulp.watch('dist/css/*.css', ['minify-css']);
-	gulp.watch('js/*.js', ['minify-js']);
+	gulp.watch('js/dotnet/*.js', ['minify-js-dotnet']);
+	gulp.watch('js/ruby/*.js', ['minify-js-ruby']);
+
 	// Reloads the browser whenever HTML or JS files change
 	gulp.watch('pages/*.html', browserSync.reload);
+	gulp.watch('dotnet/*.html', browserSync.reload);
 	gulp.watch('dist/js/*.js', browserSync.reload);
 });
 
-// ..................................................................................
+// Build the project and launch the application in the browser
+gulp.task('browserSync', ['minify-css', 'minify-js-dotnet','minify-js-ruby', 'copy', 'import-data-from-amf'], function ( ) {
+	browserSync.init({
+		server: {
+			baseDir: '.' }
+	});
+});
 
-// gulp.task('dev', ['browserSync', 'less', 'minify-css', 'js', 'minify-js'], function() {
-//	if(argv.dir == undefined && argv.amf == undefined) {
-//	   console.log('Please --dir <dir> or --amf <file> to specify a directory where .log/.json/.dat files are stored to visualize')
-//	   process.exit(-1)
-//	}
-//	gulp.src('app/tmp', {read: false}).pipe(clean());
-//	fs.mkdirs('data')
-//	if(argv.amf != undefined) {
-//	  try {
-//		gulp.src(argv.amf).pipe(decompress({strip:0})).pipe(gulp.dest('data'))
-//	  } catch(err) {
-//		console.error(err)
-//	  }
-//	} else if(argv.dir != undefined) {
-//	   try {
-//		  fs.copySync(argv.dir, 'data')
-//		  console.log("success!")
-//	   } catch (err) {
-//		  console.error(err)
-//	   }
-//	}
-//	gulp.watch('less/*.less', ['less']);
-//	gulp.watch('dist/css/*.css', ['minify-css']);
-//	gulp.watch('js/*.js', ['minify-js']);
-//	// Reloads the browser whenever HTML or JS files change
-//	gulp.watch('pages/*.html', browserSync.reload);
-//	gulp.watch('dist/js/*.js', browserSync.reload);
-// });
+// Builds static file assets.
+gulp.task('default', ['minify-css', 'minify-js', 'copy']);
+
+// Dev task - build the project and run the watch task.
+gulp.task('dev', ['browserSync', 'watch']);
