@@ -25,7 +25,12 @@ classloadingResults = [
 	{
 		data:0,
 		label:'Analyzed (Instrumented)'
-	}
+	},
+	{
+  		data:0,
+  		label:'Blacklisted'
+  }
+
 ]
 classloadingAdapters = {
 		

@@ -4,6 +4,7 @@ function bucketizeClassLoads(data) {
 	var bucketIgnored = 0;
 	var bucketAnalyzedIgnored = 0;
 	var bucketAnalyzedInstrumented = 0;
+	var bucketBlacklisted = 0;
 	
 	// all the data is bucketed into this
 	var buckets = Array(bucketCount)
@@ -29,7 +30,8 @@ function bucketizeClassLoads(data) {
 				'untouchable':0,
 				'ignored':0,
 				'analyzed_ignored':0,
-				'analyzed_instrumented':0
+				'analyzed_instrumented':0,
+				'blacklisted':0
 			}
 		}
 		
@@ -80,7 +82,11 @@ function bucketizeClassLoads(data) {
 					buckets[bucketIndex].analyzed_instrumented++
 					classloadingResults[3].data++;
 					totalAnalyzed++
-				}
+				} else if(entry.supportingData['result'][0] == "BLACKLISTED") {
+          buckets[bucketIndex].blacklisted++
+          classloadingResults[4].data++;
+          totalAnalyzed++
+        }
 			}
 		}
 	}
