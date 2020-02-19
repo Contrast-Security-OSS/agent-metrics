@@ -9,29 +9,7 @@ timeline = []
 
 classloads = []
 classloadTableRows = []
-classloadingResults = [
-	{
-		data:0,
-		label:'Untouchable'
-	},
-	{
-		data:0,
-		label:'Ignored',
-	},
-	{
-		data:0,
-		label:'Analyzed (Ignored)',
-	},
-	{
-		data:0,
-		label:'Analyzed (Instrumented)'
-	},
-	{
-  		data:0,
-  		label:'Blacklisted'
-  }
 
-]
 classloadingAdapters = {
 		
 };
