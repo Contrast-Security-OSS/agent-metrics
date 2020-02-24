@@ -1,11 +1,5 @@
 function bucketizeClassLoads(data) {
-	// temp variables when looking at each bucket
-	var bucketUntouchable = 0;
-	var bucketIgnored = 0;
-	var bucketAnalyzedIgnored = 0;
-	var bucketAnalyzedInstrumented = 0;
-	var bucketBlacklisted = 0;
-	
+	classloadingResults = initializeClassloadingResults();
 	// all the data is bucketed into this
 	var buckets = Array(bucketCount)
 	var bucketIndex = 0;
@@ -83,10 +77,10 @@ function bucketizeClassLoads(data) {
 					classloadingResults[3].data++;
 					totalAnalyzed++
 				} else if(entry.supportingData['result'][0] == "BLACKLISTED") {
-          buckets[bucketIndex].blacklisted++
-          classloadingResults[4].data++;
-          totalAnalyzed++
-        }
+					buckets[bucketIndex].blacklisted++
+					classloadingResults[4].data++;
+					totalAnalyzed++
+        		}
 			}
 		}
 	}
@@ -95,14 +89,45 @@ function bucketizeClassLoads(data) {
 	rateOfClassloads = round((totalClassloads * 1000)/elapsed);
 	$("#rate-classloads").text(addCommas(rateOfClassloads) + "/second")	
 	
-	// populate data table
+	// populate data tables
 	classloadingAdapterTableRows = Array()
 	for(var adapter in classloadingAdapters) {
 		var count = classloadingAdapters[adapter]
 		classloadingAdapterTableRows.push([adapter,count,count/totalAnalyzed])
 	}
+	classloadingEventTotalRows = Array()
+	for(var i=0;i<classloadingResults.length;i++) {
+		var result = classloadingResults[i]
+		classloadingEventTotalRows.push([result.label, result.data])
+	}
 	
 	return buckets
+}
+
+function initializeClassloadingResults(){
+	return [
+		{
+			data:0,
+			label:'Untouchable'
+		},
+		{
+			data:0,
+			label:'Ignored',
+		},
+		{
+			data:0,
+			label:'Analyzed (Ignored)',
+		},
+		{
+			data:0,
+			label:'Analyzed (Instrumented)'
+		},
+		{
+			  data:0,
+			  label:'Blacklisted'
+	  }
+	
+	]
 }
 
 function loadClassloadPieChart() {
@@ -153,6 +178,18 @@ function loadClassloadingTable() {
 	
 }
 
+function loadClassloadingTotal(){
+	$("#classloading-total").DataTable({
+		searching: false,
+		paging: false,
+		data: classloadingEventTotalRows,
+		columns: [
+		          { title: "Type" },
+		          { title: "Count" },
+		         ],
+    });
+}
+
 function changeClassloadingView() {
 	$.ajax({
         url : 'classloading.html',
@@ -161,7 +198,8 @@ function changeClassloadingView() {
             $('#page-wrapper').html(data);
             drawClassloadingOverview();
             loadClassloadPieChart();
-            loadClassloadingTable();
+			loadClassloadingTable();
+			loadClassloadingTotal();
         }
     });
 }
@@ -172,8 +210,8 @@ function drawClassloadingOverview() {
         element: 'classloading-chart',
         data: buckets,
         xkey: 'time',
-        ykeys: ['untouchable', 'ignored', 'analyzed_ignored', 'analyzed_instrumented'],
-        labels: ['Untouchable', 'Ignored', 'Analyzed (Ignored)', 'Analyzed (Instrumented)'],
+        ykeys: ['untouchable', 'ignored', 'analyzed_ignored', 'analyzed_instrumented', 'blacklisted'],
+        labels: ['Untouchable', 'Ignored', 'Analyzed (Ignored)', 'Analyzed (Instrumented)', 'Blacklisted'],
         pointSize: 2,
         hideHover: 'auto',
         resize: true
