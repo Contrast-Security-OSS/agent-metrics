@@ -8,11 +8,15 @@
     "type": "MIT",
     "url": "https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE"
   },
+  "scripts": {
+    "start": "gulp dev --amf"
+  },
   "devDependencies": {
     "browser-sync": "^2.13.0",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
     "gulp-clean-css": "^2.0.10",
+    "gulp-cli": "^2.0.1",
     "gulp-concat": "^2.6.1",
     "gulp-decompress": "^2.0.1",
     "gulp-header": "^1.8.7",
